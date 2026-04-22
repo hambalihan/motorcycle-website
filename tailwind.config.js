@@ -1,16 +1,22 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-  content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
+module.exports = {
+  content: [
+    './app/**/*.{js,jsx,ts,tsx}',
+    './components/**/*.{js,jsx,ts,tsx}'
+  ],
   theme: {
     extend: {
       colors: {
-        neon: '#30A8FF'
+        neon: '#30A8FF',
+        night: '#050816',
+        steel: '#0d1427'
       },
       boxShadow: {
-        glow: '0 0 30px rgba(48, 168, 255, 0.35)'
+        glow: '0 20px 80px rgba(48, 168, 255, 0.22)',
+        panel: '0 24px 80px rgba(4, 10, 24, 0.45)'
       },
       backgroundImage: {
-        'radial-neon': 'radial-gradient(circle at top, rgba(48,168,255,0.25), transparent 55%)'
+        grid: 'linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)'
       }
     }
   },
