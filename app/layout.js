@@ -2,8 +2,8 @@ import './globals.css';
 import MotionProvider from '../components/MotionProvider';
 
 export const metadata = {
-  title: 'Aether One | Futuristic Electric Motorcycle',
-  description: 'A premium dark-mode landing page for a futuristic electric motorcycle built with Next.js, Tailwind CSS, and Framer Motion.'
+  title: 'Aether One | Electric Motorcycle',
+  description: 'A modern product website for the Aether One electric motorcycle.'
 };
 
 export default function RootLayout({ children }) {

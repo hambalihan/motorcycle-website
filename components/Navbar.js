@@ -16,9 +16,9 @@ export default function Navbar() {
       initial={{ opacity: 0, y: -16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.82, ease: easePremium }}
-      className="sticky top-4 z-50 mb-8 md:mb-10"
+      className="z-50"
     >
-      <nav className="glass-nav mx-auto flex items-center justify-between rounded-full px-4 py-3 md:px-7 md:py-4">
+      <nav className="glass-nav mx-auto flex max-w-7xl items-center justify-between rounded-full px-4 py-3 md:px-7 md:py-4">
         <MagneticButton as="a" href="#" strength={10} whileHover={hoverLift} transition={softSpring} className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full border border-neon/30 bg-neon/10 text-sm font-bold tracking-[0.3em] text-neon shadow-glow">
             A
@@ -70,7 +70,7 @@ export default function Navbar() {
           strength={10}
           whileHover={hoverLift}
           transition={softSpring}
-          className="rounded-full border border-white/12 bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors duration-300 hover:border-neon/40 hover:text-neon"
+          className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors duration-300 hover:border-neon/40 hover:text-neon"
         >
           Reserve
         </MagneticButton>

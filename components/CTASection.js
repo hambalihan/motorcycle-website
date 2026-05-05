@@ -2,9 +2,7 @@
 
 import { m, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import { MagneticButton } from './MagneticAction';
-import { StaggerGroup, StaggerItem } from './StaggerGroup';
-import { hoverLift, softSpring } from './motion';
+import { easePremium } from './motion';
 
 export default function CTASection() {
   const sectionRef = useRef(null);
@@ -13,38 +11,59 @@ export default function CTASection() {
     target: sectionRef,
     offset: ['start end', 'end start']
   });
-  const panelY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -18]);
-  const panelScale = useTransform(scrollYProgress, [0, 0.6, 1], [1, 1, prefersReducedMotion ? 1 : 1.01]);
-  const ambientY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -52]);
+
+  const blockY = useTransform(scrollYProgress, [0, 1], [prefersReducedMotion ? 0 : 34, prefersReducedMotion ? 0 : -24]);
+  const glowScale = useTransform(scrollYProgress, [0, 1], [0.96, 1.04]);
 
   return (
-    <section ref={sectionRef} id="reserve" className="section-shell flex min-h-[88vh] items-center pb-8">
-      <m.div style={{ y: ambientY }} className="section-depth section-depth-bottom will-change-transform" />
-      <m.div style={{ y: panelY, scale: panelScale }} className="relative will-change-transform">
-      <StaggerGroup className="glass-panel depth-panel relative overflow-hidden rounded-[2.4rem] px-7 py-14 md:px-12 md:py-20 lg:px-16">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(48,168,255,0.16),transparent_30%)]" />
-        <div className="cta-foreground" />
-        <div className="relative flex flex-col items-start gap-12">
-          <StaggerItem className="max-w-4xl">
-            <span className="section-tag">Final chapter</span>
-            <h2 className="section-title mt-8 max-w-4xl">Aether One is built to feel memorable before the ride even begins.</h2>
-            <p className="section-copy mt-8 max-w-2xl">
-              Join the early access list for launch pricing, private previews, and first allocation updates.
-            </p>
-          </StaggerItem>
+    <section ref={sectionRef} className="relative min-h-[92vh] overflow-hidden bg-black text-white">
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,#000_0%,#050608_46%,#000_100%)]" />
+      <m.div
+        style={{ scale: glowScale }}
+        className="absolute left-1/2 top-1/2 h-[26rem] w-[56rem] max-w-[90vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.16),rgba(239,68,68,0.1)_42%,transparent_72%)] blur-3xl"
+      />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_34%,rgba(0,0,0,0.86)_100%)]" />
 
-          <StaggerItem className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
-            <MagneticButton
-              whileHover={hoverLift}
-              transition={softSpring}
-              className="rounded-full bg-neon px-7 py-3.5 text-sm font-semibold text-slate-950 shadow-glow"
-            >
-              Join waitlist
-            </MagneticButton>
-            <p className="body-muted max-w-xs">Limited launch allocations available worldwide.</p>
-          </StaggerItem>
-        </div>
-      </StaggerGroup>
+      <m.div
+        style={{ y: blockY }}
+        className="relative z-10 mx-auto flex min-h-[92vh] max-w-5xl flex-col justify-center px-6 py-20 text-center md:px-10"
+      >
+        <m.p
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ amount: 0.5, once: false }}
+          transition={{ duration: 0.9, ease: easePremium }}
+          className="text-xs font-semibold uppercase tracking-[0.24em] text-white/42 md:text-sm"
+        >
+          05 / Reserve
+        </m.p>
+        <m.h2
+          initial={{ opacity: 0, y: 34, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          viewport={{ amount: 0.5, once: false }}
+          transition={{ duration: 1.08, delay: 0.08, ease: easePremium }}
+          className="mt-6 text-5xl font-semibold uppercase leading-[0.9] tracking-[-0.045em] md:text-7xl lg:text-[6rem]"
+        >
+          Make the last section the first test ride
+        </m.h2>
+        <m.p
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ amount: 0.5, once: false }}
+          transition={{ duration: 0.95, delay: 0.18, ease: easePremium }}
+          className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-white/62 md:text-xl md:leading-9"
+        >
+          Add a lead form, a dealer finder, or a reservation flow here. The page above has already done the emotional work.
+        </m.p>
+        <m.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ amount: 0.5, once: false }}
+          transition={{ duration: 0.9, delay: 0.28, ease: easePremium }}
+          className="mx-auto mt-12 w-fit rounded-full border border-white/12 bg-white/6 px-7 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-xl"
+        >
+          Reserve interest
+        </m.div>
       </m.div>
     </section>
   );

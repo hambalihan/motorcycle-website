@@ -1,16 +1,31 @@
 'use client';
 
 import { m, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import Image from 'next/image';
 import { useRef } from 'react';
-import { MagneticButton } from './MagneticAction';
-import { StaggerGroup, StaggerItem } from './StaggerGroup';
-import { easePremium, easeSmooth, hoverLift, softSpring } from './motion';
 
-const stats = [
-  { label: 'Top speed', value: '260 km/h' },
-  { label: 'Range', value: '340 km' },
-  { label: 'Fast charge', value: '20 min' }
-];
+const easeCinematic = [0.16, 1, 0.3, 1];
+const HERO_IMAGE = '/assets/HeroBanner.jpg';
+
+const copyVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.16
+    }
+  }
+};
+
+const copyItem = {
+  hidden: { opacity: 0, y: 28, filter: 'blur(12px)' },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 1.05, ease: easeCinematic }
+  }
+};
 
 export default function HeroSection() {
   const sectionRef = useRef(null);
@@ -19,131 +34,96 @@ export default function HeroSection() {
     target: sectionRef,
     offset: ['start start', 'end start']
   });
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : 120]);
-  const mediaY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -80]);
-  const glowY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -140]);
-  const secondaryGlowY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : 90]);
-  const mediaScale = useTransform(scrollYProgress, [0, 0.7, 1], [1, prefersReducedMotion ? 1 : 1.02, prefersReducedMotion ? 1 : 0.985]);
-  const foregroundY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -34]);
 
-  const words = ['A', 'story', 'told', 'through', 'light,', 'speed,', 'and', 'silence.'];
+  const copyY = useTransform(scrollYProgress, [0, 0.78], [0, prefersReducedMotion ? 0 : -84]);
+  const copyOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const bikeY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -58]);
+  const bikeX = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : 58]);
+  const bikeScale = useTransform(scrollYProgress, [0, 1], [1, prefersReducedMotion ? 1 : 1.06]);
+  const ambientX = useTransform(scrollYProgress, [0, 1], [prefersReducedMotion ? 0 : -30, prefersReducedMotion ? 0 : 34]);
 
   return (
-    <section ref={sectionRef} className="section-shell flex min-h-[96vh] flex-col justify-center pt-10 md:pt-14">
-      <div className="grid gap-16 lg:grid-cols-[0.96fr_1.04fr] lg:items-center lg:gap-24">
-        <m.div style={{ y: contentY }} className="max-w-4xl will-change-transform">
-          <StaggerGroup className="space-y-0">
-            <StaggerItem>
-              <span className="section-tag">Electric future, redefined</span>
-            </StaggerItem>
-            <StaggerItem>
-              <h1 className="headline mt-7 max-w-6xl">
-                {words.map((word, index) => (
-                  <span key={`${word}-${index}`} className="headline-word">
-                    <m.span
-                      initial={{ opacity: 0, y: '110%' }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.8 }}
-                      transition={{ duration: 0.82, delay: 0.14 + index * 0.05, ease: easePremium }}
-                      className="inline-block will-change-transform"
-                    >
-                      {word}
-                    </m.span>
-                  </span>
-                ))}
-              </h1>
-            </StaggerItem>
-            <StaggerItem>
-              <p className="subheadline mt-10 max-w-xl">
-                Aether One is designed as a cinematic object first: a machine that feels sculpted by air, stripped of
-                noise, and reduced to the moments that matter.
-              </p>
-            </StaggerItem>
-            <StaggerItem>
-              <div className="mt-11 flex flex-wrap items-center gap-4 md:gap-5">
-                <MagneticButton
-                  as="a"
-                  href="#reserve"
-                  whileHover={hoverLift}
-                  transition={softSpring}
-                  className="rounded-full bg-neon px-6 py-3 text-sm font-semibold text-slate-950 shadow-glow"
-                >
-                  Reserve now
-                </MagneticButton>
-                <MagneticButton
-                  as="a"
-                  href="#showcase"
-                  strength={12}
-                  whileHover={{ y: -2.5, scale: 1.005 }}
-                  transition={softSpring}
-                  className="rounded-full border border-white/12 bg-white/5 px-6 py-3 text-sm font-medium text-white backdrop-blur-xl"
-                >
-                  Explore design
-                </MagneticButton>
-              </div>
-            </StaggerItem>
-          </StaggerGroup>
+    <section ref={sectionRef} className="relative min-h-screen overflow-hidden bg-black text-white">
+      <div className="absolute inset-0 bg-[linear-gradient(120deg,#020203_0%,#07070b_44%,#000_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_76%_46%,rgba(255,255,255,0.08),transparent_24%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_34%,rgba(0,0,0,0.86)_100%)]" />
+      <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black via-black/78 to-transparent" />
 
-          <StaggerGroup className="mt-20 grid gap-7 border-t border-white/10 pt-10 sm:grid-cols-3">
-            {stats.map((stat) => (
-              <StaggerItem key={stat.label}>
-                <p className="text-[0.68rem] uppercase tracking-[0.28em] text-slate-500">{stat.label}</p>
-                <p className="mt-4 text-[1.95rem] font-bold tracking-[-0.05em] text-white md:text-[2.1rem]">{stat.value}</p>
-              </StaggerItem>
-            ))}
-          </StaggerGroup>
+      <m.div
+        style={{ x: ambientX }}
+        animate={prefersReducedMotion ? undefined : { opacity: [0.7, 1, 0.7], scale: [1, 1.03, 1] }}
+        transition={prefersReducedMotion ? undefined : { duration: 8.2, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute right-[-12rem] top-[16%] h-[34rem] w-[56rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.26),rgba(37,99,235,0.07)_42%,transparent_72%)] blur-3xl"
+      />
+      <m.div
+        style={{ x: ambientX }}
+        animate={prefersReducedMotion ? undefined : { opacity: [0.42, 0.72, 0.42], scale: [1.01, 1, 1.01] }}
+        transition={prefersReducedMotion ? undefined : { duration: 9.8, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute right-[0%] top-[54%] h-48 w-[42rem] -rotate-6 bg-[linear-gradient(90deg,transparent,rgba(239,68,68,0.26),rgba(255,255,255,0.12),transparent)] blur-2xl"
+      />
+
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-6 pb-14 pt-24 md:px-10 lg:flex-row lg:items-center lg:gap-10 lg:pb-0 lg:pt-0">
+        <m.div
+          variants={copyVariants}
+          initial="hidden"
+          animate="show"
+          style={{ y: copyY, opacity: copyOpacity }}
+          className="flex min-h-[42vh] flex-col justify-center lg:min-h-0 lg:w-[44%]"
+        >
+          <m.p variants={copyItem} className="text-xs font-semibold uppercase tracking-[0.24em] text-white/46 md:text-sm">
+            APEX ONE
+          </m.p>
+          <m.h1
+            variants={copyItem}
+            className="mt-7 max-w-[10ch] text-6xl font-semibold uppercase leading-[0.86] tracking-[-0.055em] text-white md:text-8xl lg:text-[7.4rem]"
+          >
+            Built for the next ride
+          </m.h1>
+          <m.p variants={copyItem} className="mt-8 max-w-md text-lg leading-8 text-white/64 md:text-xl md:leading-9">
+            A premium electric motorcycle landing page template built to make the machine feel desirable before the first ride.
+          </m.p>
         </m.div>
 
-        <m.div style={{ y: mediaY }} className="relative will-change-transform">
-          <div className="depth-grid depth-grid-hero" />
-          <m.div style={{ y: glowY }} className="hero-float hero-float-one will-change-transform" />
-          <m.div style={{ y: secondaryGlowY }} className="hero-float hero-float-two will-change-transform" />
-          <m.div style={{ y: foregroundY }} className="hero-float hero-float-three will-change-transform" />
+        <m.div
+          initial={{ opacity: 0, x: 40, scale: 0.96 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          transition={{ duration: 1.3, delay: 0.32, ease: easeCinematic }}
+          style={{ x: bikeX, y: bikeY, scale: bikeScale }}
+          className="relative h-[48vh] w-full flex-1 will-change-transform sm:h-[54vh] lg:h-[82vh] lg:w-[56%]"
+        >
           <m.div
-            initial={{ opacity: 0, y: 30, scale: 0.985 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            animate={
-              prefersReducedMotion
-                ? undefined
-                : { y: [0, -8, 0], rotate: [0, -0.9, 0] }
-            }
-            transition={
-              prefersReducedMotion
-                ? { duration: 0.8, ease: easePremium }
-                : { duration: 8.5, repeat: Infinity, repeatType: 'mirror', ease: easeSmooth }
-            }
-            style={{ scale: mediaScale }}
-            className="glass-panel depth-panel relative overflow-hidden rounded-[2.2rem] p-4 will-change-transform md:p-5"
+            animate={prefersReducedMotion ? undefined : { y: [0, -10, 0], rotate: [0, -0.3, 0] }}
+            transition={prefersReducedMotion ? undefined : { duration: 7.8, repeat: Infinity, ease: 'easeInOut' }}
+            className="relative h-full w-full"
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(48,168,255,0.18),transparent_55%)]" />
-            <div className="absolute inset-x-10 top-4 h-24 rounded-full bg-neon/10 blur-3xl" />
-            <div className="relative overflow-hidden rounded-[1.5rem] border border-white/10">
-              <m.img
-                src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1600&q=80"
-                alt="Futuristic motorcycle in a dark studio"
-                className="h-[30rem] w-full object-cover md:h-[38rem]"
-                animate={prefersReducedMotion ? undefined : { scale: [1, 1.025, 1] }}
-                transition={prefersReducedMotion ? undefined : { duration: 11, repeat: Infinity, repeatType: 'mirror', ease: easeSmooth }}
-              />
-            </div>
-
-            <m.div
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.6 }}
-              transition={{ delay: 0.36, duration: 0.82, ease: easePremium }}
-              className="absolute bottom-6 left-6 right-6 rounded-[1.5rem] border border-white/10 bg-slate-950/70 p-5 backdrop-blur-xl will-change-transform md:bottom-8 md:left-8 md:right-8 md:p-6"
-            >
-              <p className="text-[0.68rem] uppercase tracking-[0.28em] text-neon/80">Ride intelligence</p>
-              <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <p className="max-w-md text-xl font-semibold tracking-[-0.04em] text-white">Every surface exists to make the ride feel inevitable.</p>
-                <p className="max-w-xs text-[0.95rem] leading-7 text-slate-400">Fast when asked, quiet when needed, and composed in every frame.</p>
-              </div>
-            </m.div>
+            <Image
+              src={HERO_IMAGE}
+              alt="Motorcycle hero render"
+              fill
+              priority
+              loading="eager"
+              sizes="(max-width: 1024px) 100vw, 58vw"
+              className="object-contain object-center lg:object-right drop-shadow-[0_48px_110px_rgba(0,0,0,0.82)]"
+            />
           </m.div>
         </m.div>
       </div>
+
+      <m.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 1.1, ease: easeCinematic }}
+        className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3 text-white/42"
+      >
+        <span className="text-[0.65rem] font-medium uppercase tracking-[0.22em]">Scroll to explore</span>
+        <span className="relative h-11 w-px overflow-hidden bg-white/12">
+          <m.span
+            animate={prefersReducedMotion ? undefined : { y: ['-100%', '135%'] }}
+            transition={prefersReducedMotion ? undefined : { duration: 1.7, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute left-0 top-0 h-7 w-px bg-white/70"
+          />
+        </span>
+      </m.div>
     </section>
   );
 }
